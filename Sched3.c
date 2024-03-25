@@ -3,35 +3,42 @@
 
 int q[100], front = -1, rear = -1;
 
-struct Process {
+struct Process
+{
     char name[20];
     int at, tt, bt, wt, ct, status, left, pr;
 };
 
-struct Done {
+struct Done
+{
     char name[20];
     int st, ct;
 };
 
 // Function to print Gantt chart
-void printGanttChart(struct Done d[], int num) {
+void printGanttChart(struct Done d[], int num)
+{
     printf("\nGANTT CHART ");
     printf("\n\t--------------------------------------------------------------------\n\t");
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++)
+    {
         printf("|");
         printf("%s\t", d[i].name);
     }
     printf(" |");
     printf("\n\t--------------------------------------------------------------------\n\t");
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++)
+    {
         printf("%d\t", d[i].st);
     }
     printf("%d\t\n", d[num - 1].ct);
 }
 
 // Function to input process information
-void inputProcessInfo(struct Process p[], int n) {
-    for (int i = 0; i < n; i++) {
+void inputProcessInfo(struct Process p[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
         printf("\nENTER DETAILS OF PROCESS %d", i + 1);
         printf("\nPROCESS NAME : ");
         scanf(" %s", p[i].name);
@@ -45,15 +52,18 @@ void inputProcessInfo(struct Process p[], int n) {
 }
 
 // Function to print process table
-void printProcessTable(struct Process p[], int n) {
+void printProcessTable(struct Process p[], int n)
+{
     printf("\nPROCESS NAME\tCOMPLETION TIME (ms)\tWAITING TIME (ms)\tTURNAROUND TIME (ms)\n\n");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("    %s\t\t\t%d\t\t\t%d\t\t\t%d\n", p[i].name, p[i].ct, p[i].wt, p[i].tt);
     }
 }
 
 // Function for First Come First Serve scheduling
-void fcfs() {
+void fcfs()
+{
     int i, j, n, num, idle = 0;
     float avwt = 0, avtt = 0;
     printf("ENTER THE NUMBER OF PROCESSES : ");
@@ -64,9 +74,12 @@ void fcfs() {
     // FCFS Algorithm
     num = 0;
     struct Done d[2 * n];
-    for (i = 0, j = 0; j < n;) {
-        if (p[j].at <= i && p[j].status == 0) {
-            if (idle == 1) {
+    for (i = 0, j = 0; j < n;)
+    {
+        if (p[j].at <= i && p[j].status == 0)
+        {
+            if (idle == 1)
+            {
                 d[num].ct = i;
                 num++;
                 idle = 0;
@@ -81,12 +94,16 @@ void fcfs() {
             p[j].status = 1;
             j++;
             num++;
-        } else if (idle == 0) {
+        }
+        else if (idle == 0)
+        {
             strcpy(d[num].name, "Idle");
             d[num].st = i;
             i++;
             idle = 1;
-        } else {
+        }
+        else
+        {
             i++;
         }
     }
@@ -99,7 +116,8 @@ void fcfs() {
 }
 
 // Function for Shortest Job First scheduling
-void sjf() {
+void sjf()
+{
     int i, j, n, num, idle = 0;
     float avwt = 0, avtt = 0;
     printf("ENTER THE NUMBER OF PROCESSES : ");
@@ -107,10 +125,13 @@ void sjf() {
     struct Process p[n];
     inputProcessInfo(p, n);
 
-    // Sorting based on arrival time
-    for (i = 0; i < n - 1; i++) {
-        for (j = 0; j < n - i - 1; j++) {
-            if (p[j].at > p[j + 1].at) {
+    // Sorting based on burst time
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (p[j].bt > p[j + 1].bt)
+            {
                 struct Process temp = p[j];
                 p[j] = p[j + 1];
                 p[j + 1] = temp;
@@ -121,7 +142,8 @@ void sjf() {
     // SJF Algorithm
     num = 0;
     struct Done d[2 * n];
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++)
+    {
         d[num].st = p[i].at;
         strcpy(d[num].name, p[i].name);
         d[num].ct = d[num].st + p[i].bt;
@@ -139,7 +161,8 @@ void sjf() {
 }
 
 // Function for Priority scheduling
-void priority() {
+void priority()
+{
     int n, i, j, ls, min, fnd, num, idle;
     float twt = 0.0, ttt = 0.0;
     printf("ENTER THE NUMBER OF PROCESSES : ");
@@ -215,7 +238,8 @@ void priority() {
 }
 
 // Function for Round Robin scheduling
-void roundRobin() {
+void roundRobin()
+{
     int i, j, n, num, idle = 0;
     float avwt = 0, avtt = 0;
     printf("ENTER THE NUMBER OF PROCESSES : ");
@@ -232,15 +256,18 @@ void roundRobin() {
     struct Done d[2 * n];
     int front = -1, rear = -1;
     int q[100];
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++)
+    {
         p[i].status = 0;
         enqueue(&front, &rear, i);
     }
 
     int time = 0;
-    while (!isEmpty(front, rear)) {
+    while (!isEmpty(front, rear))
+    {
         int current = dequeue(&front, &rear);
-        if (p[current].left <= quantum) {
+        if (p[current].left <= quantum)
+        {
             d[num].st = time;
             strcpy(d[num].name, p[current].name);
             time += p[current].left;
@@ -251,15 +278,19 @@ void roundRobin() {
             p[current].left = 0;
             p[current].status = 1;
             num++;
-        } else {
+        }
+        else
+        {
             d[num].st = time;
             strcpy(d[num].name, p[current].name);
             time += quantum;
             d[num].ct = time;
             p[current].left -= quantum;
             num++;
-            for (j = 0; j < n; j++) {
-                if (p[j].at <= time && p[j].status == 0) {
+            for (j = 0; j < n; j++)
+            {
+                if (p[j].at <= time && p[j].status == 0)
+                {
                     enqueue(&front, &rear, j);
                     p[j].status = 1;
                 }
@@ -276,8 +307,10 @@ void roundRobin() {
 }
 
 // Function to enqueue element into the queue
-void enqueue(int *front, int *rear, int j) {
-    if (*front == -1) {
+void enqueue(int *front, int *rear, int j)
+{
+    if (*front == -1)
+    {
         *front = 0;
     }
     (*rear)++;
@@ -285,46 +318,54 @@ void enqueue(int *front, int *rear, int j) {
 }
 
 // Function to dequeue element from the queue
-int dequeue(int *front, int *rear) {
+int dequeue(int *front, int *rear)
+{
     int item = q[*front];
-    if (*front == *rear) {
+    if (*front == *rear)
+    {
         *front = -1;
         *rear = -1;
-    } else {
+    }
+    else
+    {
         (*front)++;
     }
     return item;
 }
 
 // Function to check if the queue is empty
-int isEmpty(int front, int rear) {
+int isEmpty(int front, int rear)
+{
     return (front == -1 || front > rear);
 }
 
-int main() {
+int main()
+{
     int choice;
-    while (choice != 5) {
+    while (choice != 5)
+    {
         printf("\n--Menu--\n");
         printf("1.FCFS   2.SJF   3.Priority   4.Round Robin   5.Exit\nEnter choice:");
         scanf("%d", &choice);
-        switch (choice) {
-            case 1:
-                fcfs();
-                break;
-            case 2:
-                sjf();
-                break;
-            case 3:
-                priority();
-                break;
-            case 4:
-                roundRobin();
-                break;
-            case 5:
-                break;
-            default:
-                printf("\nInvalid Choice\n");
-                break;
+        switch (choice)
+        {
+        case 1:
+            fcfs();
+            break;
+        case 2:
+            sjf();
+            break;
+        case 3:
+            priority();
+            break;
+        case 4:
+            roundRobin();
+            break;
+        case 5:
+            break;
+        default:
+            printf("\nInvalid Choice\n");
+            break;
         }
     }
     return 0;
