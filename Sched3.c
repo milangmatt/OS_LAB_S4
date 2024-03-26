@@ -15,6 +15,40 @@ struct Done
     int st, ct;
 };
 
+// Function to enqueue element into the queue
+void enqueue(int *front, int *rear, int j)
+{
+    if (*front == -1)
+    {
+        *front = 0;
+    }
+    (*rear)++;
+    q[*rear] = j;
+}
+
+// Function to dequeue element from the queue
+int dequeue(int *front, int *rear)
+{
+    int item = q[*front];
+    if (*front == *rear)
+    {
+        *front = -1;
+        *rear = -1;
+    }
+    else
+    {
+        (*front)++;
+    }
+    return item;
+}
+
+// Function to check if the queue is empty
+int isEmpty(int front, int rear)
+{
+    return (front == -1 || front > rear);
+}
+
+
 // Function to print Gantt chart
 void printGanttChart(struct Done d[], int num)
 {
@@ -322,38 +356,6 @@ void roundRobin()
     printProcessTable(p, n);
 }
 
-// Function to enqueue element into the queue
-void enqueue(int *front, int *rear, int j)
-{
-    if (*front == -1)
-    {
-        *front = 0;
-    }
-    (*rear)++;
-    q[*rear] = j;
-}
-
-// Function to dequeue element from the queue
-int dequeue(int *front, int *rear)
-{
-    int item = q[*front];
-    if (*front == *rear)
-    {
-        *front = -1;
-        *rear = -1;
-    }
-    else
-    {
-        (*front)++;
-    }
-    return item;
-}
-
-// Function to check if the queue is empty
-int isEmpty(int front, int rear)
-{
-    return (front == -1 || front > rear);
-}
 
 int main()
 {
