@@ -118,40 +118,56 @@ void fcfs()
 // Function for Shortest Job First scheduling
 void sjf()
 {
-    int i, j, n, num, idle = 0;
+    int i, j, n, idle = 0;
     float avwt = 0, avtt = 0;
     printf("ENTER THE NUMBER OF PROCESSES : ");
     scanf("%d", &n);
     struct Process p[n];
     inputProcessInfo(p, n);
+    struct Done d[20];
+    int currentTime = 0;
+    int num = 0;
+    int minBurstIndex;
 
-    // Sorting based on burst time
-    for (i = 0; i < n - 1; i++)
-    {
-        for (j = 0; j < n - i - 1; j++)
-        {
-            if (p[j].bt > p[j + 1].bt)
-            {
-                struct Process temp = p[j];
-                p[j] = p[j + 1];
-                p[j + 1] = temp;
+    // Initialize status of all processes to not started
+    for (i = 0; i < n; i++) {
+        p[i].status = 0;
+    }
+
+    while (num < n) {
+        // Find the process with the shortest burst time among arrived processes
+        minBurstIndex = -1;
+        for (i = 0; i < n; i++) {
+            if (p[i].status == 0 && p[i].at <= currentTime) {
+                if (minBurstIndex == -1 || p[i].bt < p[minBurstIndex].bt) {
+                    minBurstIndex = i;
+                }
             }
+        }
+
+        // If no process is available, move time forward to the next arrival
+        if (minBurstIndex == -1) {
+            int nextArrival = __INT_MAX__;
+            for (i = 0; i < n; i++) {
+                if (p[i].status == 0 && p[i].at > currentTime && p[i].at < nextArrival) {
+                    nextArrival = p[i].at;
+                }
+            }
+            currentTime = nextArrival;
+        } else {
+            // Execute the process with the shortest burst time
+            strcpy(d[num].name, p[minBurstIndex].name);
+            d[num].st = currentTime;
+            p[minBurstIndex].status = 1; // Set status to in progress
+            currentTime += p[minBurstIndex].bt;
+            p[minBurstIndex].ct = currentTime;
+            p[minBurstIndex].tt = p[minBurstIndex].ct - p[minBurstIndex].at;
+            p[minBurstIndex].wt = p[minBurstIndex].tt - p[minBurstIndex].bt;
+            p[minBurstIndex].status = 2; // Set status to completed
+            num++;
         }
     }
 
-    // SJF Algorithm
-    num = 0;
-    struct Done d[2 * n];
-    for (i = 0; i < n; i++)
-    {
-        d[num].st = p[i].at;
-        strcpy(d[num].name, p[i].name);
-        d[num].ct = d[num].st + p[i].bt;
-        p[i].wt = d[num].st - p[i].at;
-        p[i].tt = p[i].wt + p[i].bt;
-        p[i].ct = d[num].ct;
-        num++;
-    }
 
     // Print Gantt chart
     printGanttChart(d, num);
