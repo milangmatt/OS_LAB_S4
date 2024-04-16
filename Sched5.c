@@ -3,7 +3,7 @@
 
 int q[100], front = -1, rear = -1;
 
-struct Process
+struct Process ()
 {
     char name[20];
     int at, tt, bt, wt, ct, status, left, pr;
@@ -43,7 +43,7 @@ int dequeue()
 }
 
 // Function to check if the queue is empty
-int isEmpty(int front, int rear)
+int is Empty(int front, int rear)
 {
     return (front == -1 || front > rear);
 }
@@ -119,12 +119,12 @@ void fcfs()
     {
         if (p[j].at <= i && p[j].status == 0)
         {
-            if (idle == 1)
+            if (idle = = 1)
             {
                 d[num].ct = i;
                 num++;
                 idle = 0;
-            }
+            
             strcpy(d[num].name, p[j].name);
             d[num].st = i;
             d[num].ct = i + p[j].bt;
