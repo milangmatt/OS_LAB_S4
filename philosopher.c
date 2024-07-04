@@ -15,7 +15,7 @@ Date : 16 - 04 - 2024
 #define THINKING 0
 #define HUNGRY 1
 #define EATING 2
-#define LEFT (philosopher_number + N - 1) % N
+#define LEFT (philosopher_number + N- 1) % N
 #define RIGHT (philosopher_number + 1) % N
 
 int state[N];

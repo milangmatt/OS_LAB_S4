@@ -20,11 +20,11 @@ struct Partition
 
 struct Partition partitions[MAX_PARTITION];
 
-struct Process 
-{	
-	int pid;
-	int size;
-	int memid;
+struct Process
+{
+    int pid;
+    int size;
+    int memid;
 };
 
 struct Process processes[MAX_PROCESSES];
@@ -59,15 +59,17 @@ void initPartitions()
     printPartitions();
 }
 
-void clearMemory(){
-	for (int i = 0; i < numPartitions; i++)
+void clearMemory()
+{
+    for (int i = 0; i < numPartitions; i++)
     {
         partitions[i].allocated = 0;
     }
 }
 
-void unallocateProcess(){
-	for (int i = 0; i < numProcesses; i++)
+void unallocateProcess()
+{
+    for (int i = 0; i < numProcesses; i++)
     {
         processes[i].memid = -1;
     }
@@ -90,7 +92,6 @@ void initProcesses()
     printProcesses();
 }
 
-
 void printPartitions()
 {
     int i;
@@ -109,7 +110,7 @@ void printProcesses()
     printf("Process ID\tSize\tMemory ID of Allocation\n");
     for (i = 0; i < numProcesses; i++)
     {
-        printf("%d\t\t%d\t\t%d\n", processes[i].pid, processes[i].size, processes[i].memid );
+        printf("%d\t\t%d\t\t%d\n", processes[i].pid, processes[i].size, processes[i].memid);
     }
     printf("Note: -1 denotes unallocated process");
 }
@@ -122,12 +123,12 @@ void firstFit(int procId, int procSize)
         if (partitions[i].size >= procSize && partitions[i].allocated == 0)
         {
             partitions[i].allocated = 1;
-            printf("Process with id %d is allocated in partition %d \n", procId+1, partitions[i].id);
-            processes[procId].memid=i+1;
+            printf("Process with id %d is allocated in partition %d \n", procId + 1, partitions[i].id);
+            processes[procId].memid = i + 1;
             return;
         }
     }
-    printf("Memory not available to allocate Process with id %d \n", procId+1);
+    printf("Memory not available to allocate Process with id %d \n", procId + 1);
 }
 
 void bestFit(int procId, int procSize)
@@ -149,12 +150,12 @@ void bestFit(int procId, int procSize)
     if (bestPartitionIndex != -1)
     {
         partitions[bestPartitionIndex].allocated = 1;
-        printf("Process with id %d is allocated in partition %d \n", procId+1, bestPartitionIndex+1);
-        processes[procId].memid=bestPartitionIndex+1;
+        printf("Process with id %d is allocated in partition %d \n", procId + 1, bestPartitionIndex + 1);
+        processes[procId].memid = bestPartitionIndex + 1;
     }
     else
     {
-        printf("No memory available to allocate process with id %d\n",procId+1);
+        printf("No memory available to allocate process with id %d\n", procId + 1);
     }
 }
 
@@ -176,12 +177,12 @@ void worstFit(int procId, int procSize)
     if (maxPartitionIndex != -1)
     {
         partitions[maxPartitionIndex].allocated = 1;
-        printf("Process with Id %d is allocated in Partition %d.\n", procId+1, maxPartitionIndex+1);
-        processes[procId].memid=maxPartitionIndex+1;
+        printf("Process with Id %d is allocated in Partition %d.\n", procId + 1, maxPartitionIndex + 1);
+        processes[procId].memid = maxPartitionIndex + 1;
     }
     else
     {
-        printf("No memory available to allocate process with id %d\n",procId+1);
+        printf("No memory available to allocate process with id %d\n", procId + 1);
     }
 }
 
@@ -203,32 +204,32 @@ void main()
             printPartitions();
             break;
         case 2:
-			clearMemory();
-			unallocateProcess();
-			for (int i = 0; i < numProcesses; i++)
-    {
-        firstFit(i, processes[i].size);
-    }
+            clearMemory();
+            unallocateProcess();
+            for (int i = 0; i < numProcesses; i++)
+            {
+                firstFit(i, processes[i].size);
+            }
             printPartitions();
             printProcesses();
             break;
         case 3:
-            			clearMemory();
-			unallocateProcess();
-			for (int i = 0; i < numProcesses; i++)
-    {
-        bestFit(i, processes[i].size);
-    }
+            clearMemory();
+            unallocateProcess();
+            for (int i = 0; i < numProcesses; i++)
+            {
+                bestFit(i, processes[i].size);
+            }
             printPartitions();
             printProcesses();
             break;
         case 4:
-            			clearMemory();
-			unallocateProcess();
-			for (int i = 0; i < numProcesses; i++)
-    {
-        worstFit(i, processes[i].size);
-    }
+            clearMemory();
+            unallocateProcess();
+            for (int i = 0; i < numProcesses; i++)
+            {
+                worstFit(i, processes[i].size);
+            }
             printPartitions();
             printProcesses();
             break;
